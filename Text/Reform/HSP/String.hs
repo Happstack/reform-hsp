@@ -7,7 +7,8 @@ This module assumes that you wish for text based controls such as 'inputText' an
 -}
 module Text.Reform.HSP.String
     ( -- * \<input\> element
-      inputText
+      inputEmail
+    , inputText
     , inputPassword
     , inputSubmit
     , inputReset
@@ -46,6 +47,12 @@ import Data.Text.Lazy (Text, pack)
 import HSP.XMLGenerator
 import Text.Reform
 import qualified Text.Reform.HSP.Common as C
+
+-- | Create an @\<input type=\"email\"\>@ element
+inputEmail :: (Monad m, FormInput input, FormError error, ErrorInputType error ~ input, XMLGenerator x, StringType x ~ Text, EmbedAsAttr x (Attr Text FormId), EmbedAsAttr x (Attr Text String)) =>
+               String -- ^ initial value
+            -> Form m input error [XMLGenT x (XMLType x)] () String
+inputEmail initialValue = C.inputEmail getInputString initialValue
 
 -- | Create an @\<input type=\"text\"\>@ element
 inputText :: (Monad m, FormInput input, FormError error, ErrorInputType error ~ input, XMLGenerator x, StringType x ~ Text, EmbedAsAttr x (Attr Text FormId), EmbedAsAttr x (Attr Text String)) =>

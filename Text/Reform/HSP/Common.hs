@@ -13,7 +13,7 @@ import Language.Haskell.HSX.QQ (hsx)
 import HSP.XMLGenerator
 import HSP.XML
 
-instance (EmbedAsAttr m (Attr Text Text)) => (EmbedAsAttr m (Attr Text FormId)) where
+instance (XMLGen m, EmbedAsAttr m (Attr Text Text)) => (EmbedAsAttr m (Attr Text FormId)) where
     asAttr (n := v) = asAttr (n := (pack $ show v))
 
 inputText :: (Monad m, FormError error, XMLGenerator x, StringType x ~ Text, EmbedAsAttr x (Attr Text FormId), EmbedAsAttr x (Attr Text text)) =>
@@ -23,6 +23,14 @@ inputText :: (Monad m, FormError error, XMLGenerator x, StringType x ~ Text, Emb
 inputText getInput initialValue = G.input getInput inputField initialValue
     where
       inputField i a = [hsx| [<input type="text" id=i name=i value=a />] |]
+
+inputEmail :: (Monad m, FormError error, XMLGenerator x, StringType x ~ Text, EmbedAsAttr x (Attr Text FormId), EmbedAsAttr x (Attr Text text)) =>
+             (input -> Either error text)
+          -> text
+          -> Form m input error [XMLGenT x (XMLType x)] () text
+inputEmail getInput initialValue = G.input getInput inputField initialValue
+    where
+      inputField i a = [hsx| [<input type="email" id=i name=i value=a />] |]
 
 inputPassword :: (Monad m, FormError error, XMLGenerator x, StringType x ~ Text, EmbedAsAttr x (Attr Text FormId), EmbedAsAttr x (Attr Text text)) =>
              (input -> Either error text)
