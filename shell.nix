@@ -4,12 +4,12 @@ let
 
   inherit (nixpkgs) pkgs;
 
-  f = { mkDerivation, base, hsp, hsx2hs, reform, stdenv, text }:
+  f = { mkDerivation, base, hsp, hsx2hs, reform, stdenv, text, cabal-install }:
       mkDerivation {
         pname = "reform-hsp";
         version = "0.2.6.1";
         src = ./.;
-        libraryHaskellDepends = [ base hsp hsx2hs reform text ];
+        libraryHaskellDepends = [ base hsp hsx2hs reform text cabal-install ];
         homepage = "http://www.happstack.com/";
         description = "Add support for using HSP with Reform";
         license = stdenv.lib.licenses.bsd3;
